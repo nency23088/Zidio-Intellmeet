@@ -6,7 +6,7 @@ import { generateMeetingCode } from "../utils/generateMeetingCode.js";
 import { serializeMeeting, isValidObjectId } from "../utils/meetingSerializer.js";
 import * as cache from "../services/cache.service.js";
 
-async function findMeetingByParam(idOrCode) {
+function findMeetingByParam(idOrCode) {
   if (isValidObjectId(idOrCode)) {
     return Meeting.findById(idOrCode);
   }
@@ -16,8 +16,19 @@ async function findMeetingByParam(idOrCode) {
 function canAccessMeeting(meeting, userId, role) {
   const uid = String(userId);
   if (role === "admin") return true;
-  if (String(meeting.host) === uid) return true;
-  return meeting.participants.some((p) => String(p) === uid);
+
+  const hostId =
+    meeting.host && typeof meeting.host === "object" && meeting.host._id
+      ? String(meeting.host._id)
+      : String(meeting.host);
+  if (hostId === uid) return true;
+
+  return meeting.participants.some((participant) => {
+    if (!participant) return false;
+    if (typeof participant === "string") return participant === uid;
+    if (participant._id) return String(participant._id) === uid;
+    return String(participant) === uid;
+  });
 }
 
 function canManageMeeting(meeting, userId, role) {
