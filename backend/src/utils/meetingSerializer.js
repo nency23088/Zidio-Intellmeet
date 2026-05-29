@@ -30,17 +30,7 @@ export function serializeMeeting(meeting) {
     ...(m.summary ? { summary: m.summary } : {}),
     ...(m.recording ? { recording: m.recording } : {}),
     meetingCode: m.meetingCode,
-    ...(m.actionItems?.length
-      ? {
-          actionItems: m.actionItems.map((ai) => ({
-            _id: ai._id,
-            text: ai.text,
-            ...(ai.assignee ? { assignee: miniUser(ai.assignee) } : {}),
-            status: ai.status,
-            meetingId: String(m._id),
-          })),
-        }
-      : { actionItems: [] }),
+    // actionItems removed
   };
 }
 

@@ -1,17 +1,6 @@
 import mongoose from "mongoose";
 
-const actionItemSchema = new mongoose.Schema(
-  {
-    text: { type: String, required: true },
-    assignee: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    status: {
-      type: String,
-      enum: ["pending", "done"],
-      default: "pending",
-    },
-  },
-  { timestamps: true }
-);
+// Action items removed — feature trimmed per cleanup.
 
 const attachmentSchema = new mongoose.Schema(
   {
@@ -38,7 +27,7 @@ const meetingSchema = new mongoose.Schema(
     },
     summary: { type: String },
     recording: { type: String },
-    actionItems: [actionItemSchema],
+    // actionItems removed
     attachments: [attachmentSchema],
   },
   { timestamps: true }

@@ -4,7 +4,6 @@ import app from "./app.js";
 import { connectDB } from "./config/db.js";
 import { initRedis } from "./config/redis.js";
 import { configureCloudinary } from "./config/cloudinary.js";
-import { createSocketServer } from "./socket/index.js";
 
 const PORT = Number(process.env.PORT || 5000);
 
@@ -23,7 +22,7 @@ async function bootstrap() {
   await initRedis();
 
   const httpServer = http.createServer(app);
-  await createSocketServer(httpServer);
+  // Socket.io and real-time features removed per cleanup.
 
   httpServer.listen(PORT, () => {
     console.log(`IntellMeet API listening on port ${PORT}`);

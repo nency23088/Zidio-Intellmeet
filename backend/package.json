@@ -1,7 +1,7 @@
 {
   "name": "intellmeet-backend",
   "version": "1.0.0",
-  "description": "IntellMeet REST API — authentication, meetings, teams, tasks, notifications",
+  "description": "IntellMeet REST API — authentication, meetings, users, and uploads",
   "type": "module",
   "main": "src/server.js",
   "scripts": {
@@ -21,13 +21,10 @@
     "express-rate-limit": "^7.4.1",
     "express-validator": "^7.2.0",
     "helmet": "^8.0.0",
-    "openai": "^4.104.0",
+    
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.8.3",
     "multer": "^1.4.5-lts.1",
-    "redis": "^4.7.0",
-    "socket.io": "^4.8.3",
-    "@socket.io/redis-adapter": "^8.3.0",
-    "@huggingface/inference": "^3.5.0"
+    "redis": "^4.7.0"
   }
 }

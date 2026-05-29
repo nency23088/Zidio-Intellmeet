@@ -58,8 +58,7 @@ export const createMeeting = asyncHandler(async (req, res) => {
   });
   const populated = await Meeting.findById(meeting._id)
     .populate("host", "name email role avatar")
-    .populate("participants", "name email role avatar")
-    .populate("actionItems.assignee", "name email role avatar");
+    .populate("participants", "name email role avatar");
   await User.updateMany({ _id: { $in: participantIds } }, { $addToSet: { meetings: meeting._id } });
   await cache.invalidateMeetingCache(String(meeting._id));
   res.status(201).json({ meeting: serializeMeeting(populated) });
@@ -74,16 +73,14 @@ export const listMeetings = asyncHandler(async (req, res) => {
   const rows = await Meeting.find(q)
     .sort({ scheduledTime: -1 })
     .populate("host", "name email role avatar")
-    .populate("participants", "name email role avatar")
-    .populate("actionItems.assignee", "name email role avatar");
+    .populate("participants", "name email role avatar");
   res.json({ meetings: rows.map(serializeMeeting) });
 });
 
 export const getMeeting = asyncHandler(async (req, res) => {
   const m = await findMeetingByParam(req.params.id)
     .populate("host", "name email role avatar")
-    .populate("participants", "name email role avatar")
-    .populate("actionItems.assignee", "name email role avatar");
+    .populate("participants", "name email role avatar");
   if (!m) throw new AppError("Meeting not found", 404);
   if (!canAccessMeeting(m, req.user._id, req.user.role)) {
     throw new AppError("Meeting not found", 404);
@@ -129,8 +126,7 @@ export const updateMeeting = asyncHandler(async (req, res) => {
   await m.save();
   const populated = await Meeting.findById(m._id)
     .populate("host", "name email role avatar")
-    .populate("participants", "name email role avatar")
-    .populate("actionItems.assignee", "name email role avatar");
+    .populate("participants", "name email role avatar");
   await cache.invalidateMeetingCache(String(m._id));
   res.json({ meeting: serializeMeeting(populated) });
 });
